@@ -358,20 +358,7 @@ function Navbar() {
             ))}
           </div>
 
-          <div className="hidden lg:flex items-center gap-3">
-            <button
-              onClick={() => openAuth('login')}
-              className="px-4 py-2 text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Sign In
-            </button>
-            <button
-              onClick={() => openAuth('signup')}
-              className="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full hover:shadow-lg hover:shadow-pink-500/40 transition-all hover:scale-105"
-            >
-              Get Started
-            </button>
-          </div>
+
 
           <button
             className="lg:hidden text-white p-1"
@@ -401,26 +388,7 @@ function Navbar() {
                   {item}
                 </a>
               ))}
-              <div className="pt-2 space-y-2">
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    openAuth('login');
-                  }}
-                  className="w-full px-5 py-2.5 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-full"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    openAuth('signup');
-                  }}
-                  className="w-full px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full"
-                >
-                  Get Started
-                </button>
-              </div>
+
             </div>
           </motion.div>
         )}
@@ -446,7 +414,7 @@ function InlineAuthForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-gradient-to-b from-gray-900 via-black to-black border border-white/10 rounded-3xl shadow-2xl shadow-pink-500/20 p-6">
+    <div className="w-full max-w-lg mx-auto bg-gradient-to-b from-gray-900 via-black to-black border border-white/10 rounded-3xl shadow-2xl shadow-pink-500/20 p-6">
       <div className="relative">
         <div className="absolute top-0 left-0 w-40 h-40 bg-pink-600/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-40 h-40 bg-orange-500/20 rounded-full blur-3xl pointer-events-none" />
