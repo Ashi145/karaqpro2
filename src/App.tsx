@@ -429,6 +429,141 @@ function Navbar() {
   );
 }
 
+// ==================== INLINE AUTH FORM ====================
+function InlineAuthForm() {
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    venueName: '',
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`${mode === 'login' ? 'Logging in' : 'Signing up'} as ${formData.email}\n(Demo only)`);
+  };
+
+  return (
+    <div className="w-full max-w-md mx-auto bg-gradient-to-b from-gray-900 via-black to-black border border-white/10 rounded-3xl shadow-2xl shadow-pink-500/20 p-6">
+      <div className="relative">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-pink-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-40 h-40 bg-orange-500/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative">
+          <div className="text-center mb-4">
+            <div className="inline-flex w-10 h-10 rounded-2xl bg-gradient-to-br from-pink-500 via-red-500 to-orange-400 items-center justify-center shadow-lg shadow-pink-500/40 mb-2">
+              <Mic2 className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-xl font-black text-white">
+              {mode === 'login' ? 'Welcome back' : 'Join KaraQpro'}
+            </h2>
+            <p className="text-xs text-gray-400">
+              {mode === 'login' ? 'Sign in to manage your venue' : 'Create your account in seconds'}
+            </p>
+          </div>
+
+          <div className="flex p-1 mb-4 bg-white/5 border border-white/10 rounded-full">
+            <button
+              onClick={() => setMode('login')}
+              className={`flex-1 py-2 text-xs font-semibold rounded-full transition-all ${
+                mode === 'login'
+                  ? 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white shadow-lg shadow-pink-500/25'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Sign In
+            </button>
+            <button
+              onClick={() => setMode('signup')}
+              className={`flex-1 py-2 text-xs font-semibold rounded-full transition-all ${
+                mode === 'signup'
+                  ? 'bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white shadow-lg shadow-pink-500/25'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {mode === 'signup' && (
+              <>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><User className="w-4 h-4" /></div>
+                  <input
+                    type="text"
+                    placeholder="Full name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-pink-500/50 focus:bg-white/[0.07] transition-colors"
+                  />
+                </div>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><Mic2 className="w-4 h-4" /></div>
+                  <input
+                    type="text"
+                    placeholder="Venue name"
+                    value={formData.venueName}
+                    onChange={(e) => setFormData({ ...formData, venueName: e.target.value })}
+                    required
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-pink-500/50 focus:bg-white/[0.07] transition-colors"
+                  />
+                </div>
+              </>
+            )}
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><Mail className="w-4 h-4" /></div>
+              <input
+                type="email"
+                placeholder="Email address"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-pink-500/50 focus:bg-white/[0.07] transition-colors"
+              />
+            </div>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><Lock className="w-4 h-4" /></div>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-pink-500/50 focus:bg-white/[0.07] transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 rounded-full font-bold text-sm text-white bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 hover:shadow-2xl hover:shadow-pink-500/40 transition-all flex items-center justify-center gap-2 group"
+            >
+              {mode === 'login' ? 'Sign In' : 'Create Account'}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </form>
+
+          <div className="mt-3 p-3 rounded-xl bg-pink-500/5 border border-pink-500/10 text-center">
+            <p className="text-xs text-pink-300">
+              ✦ Demo: <span className="font-mono">admin@lounge.com</span> / <span className="font-mono">password123</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ==================== HERO SECTION ====================
 function Hero() {
   const { openAuth } = useAuth();
@@ -469,36 +604,14 @@ function Hero() {
             </motion.div>
 
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.9] text-white">
-              Sing.
+              The world
               <br />
-              <span className="gradient-text">Connect.</span>
-              <br />
-              Party.
+              <span className="gradient-text">is yours.</span>
             </h1>
 
             <p className="max-w-xl mx-auto lg:mx-0 text-sm sm:text-lg md:text-xl text-gray-300 leading-relaxed">
               The pro karaoke platform powering legendary nights. Manage your venue, host shows, and let singers shine.
             </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-4">
-              <motion.button
-                onClick={() => openAuth('signup')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group w-full sm:w-auto px-6 sm:px-9 py-3 sm:py-4 text-sm sm:text-base font-bold text-white bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 rounded-full hover:shadow-2xl hover:shadow-pink-500/40 transition-all flex items-center justify-center gap-2"
-              >
-                Start Free Trial
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group w-full sm:w-auto px-6 sm:px-9 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/15 transition-all flex items-center justify-center gap-2"
-              >
-                <Play className="w-4 h-4 sm:w-5 sm:h-5" fill="white" />
-                Watch Demo
-              </motion.button>
-            </div>
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 pt-1 sm:pt-2">
               <AppStoreBadge type="apple" />
@@ -506,79 +619,14 @@ function Hero() {
             </div>
           </motion.div>
 
-          {/* Right side - floating image collage (desktop only) */}
+          {/* Right side - inline auth form (desktop only) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="hidden lg:block relative h-[600px]"
+            className="hidden lg:block"
           >
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
-              className="absolute top-0 right-0 w-72 h-96 rounded-3xl overflow-hidden border-2 border-white/10 shadow-2xl shadow-pink-500/20"
-            >
-              <img src={IMAGES.womanSinging} alt="Woman singing" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-xs text-white font-semibold">LIVE NOW</span>
-                </div>
-                <h3 className="text-white font-bold">Sarah's Open Mic Night</h3>
-                <p className="text-xs text-gray-300">128 singers • 4.9 ★</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 15, 0] }}
-              transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut', delay: 0.5 }}
-              className="absolute bottom-10 left-0 w-64 h-80 rounded-3xl overflow-hidden border-2 border-white/10 shadow-2xl shadow-orange-500/20"
-            >
-              <img src={IMAGES.djTanktop} alt="DJ" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="px-2 py-0.5 rounded-md bg-orange-500/80 text-[10px] text-white font-bold">DJ MODE</div>
-                </div>
-                <h3 className="text-white font-bold">Mix & Master</h3>
-                <p className="text-xs text-gray-300">Pro audio tools</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut', delay: 1 }}
-              className="absolute top-20 left-8 px-4 py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-xs text-gray-400">Tonight's revenue</div>
-                  <div className="text-white font-bold">+$2,847</div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.8 }}
-              className="absolute bottom-32 right-4 px-4 py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-red-500 border-2 border-black flex items-center justify-center text-sm">🎤</div>
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-yellow-500 border-2 border-black flex items-center justify-center text-sm">🎸</div>
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 border-2 border-black flex items-center justify-center text-sm">💃</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-400">Singers waiting</div>
-                  <div className="text-white font-bold text-sm">24 in queue</div>
-                </div>
-              </div>
-            </motion.div>
+            <InlineAuthForm />
           </motion.div>
         </div>
 
