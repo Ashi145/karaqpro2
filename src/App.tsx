@@ -349,13 +349,18 @@ function Navbar() {
           </a>
 
           <div className="hidden lg:flex items-center gap-8">
-            {['Features', 'Discover', 'Pricing', 'Community'].map((item) => (
+            {[
+              { label: 'Features', href: '#features' },
+              { label: 'Discover', href: '#discover' },
+              { label: 'Pricing', href: '#pricing' },
+              { label: 'Community', href: '#community' },
+            ].map((item) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                key={item.label}
+                href={item.href}
                 className="text-sm text-gray-300 hover:text-white transition-colors relative group"
               >
-                {item}
+                {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-orange-500 group-hover:w-full transition-all duration-300" />
               </a>
             ))}
@@ -381,14 +386,19 @@ function Navbar() {
             className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-white/10"
           >
             <div className="px-4 py-4 space-y-3">
-              {['Features', 'Discover', 'Pricing', 'Community'].map((item) => (
+              {[
+                { label: 'Features', href: '#features' },
+                { label: 'Discover', href: '#discover' },
+                { label: 'Pricing', href: '#pricing' },
+                { label: 'Community', href: '#community' },
+              ].map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
+                  key={item.label}
+                  href={item.href}
                   className="block text-gray-300 hover:text-white transition-colors py-1.5 text-sm"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
 
@@ -1296,17 +1306,44 @@ function Footer() {
           </div>
 
           {[
-            { title: 'Product', links: ['Features', 'Dashboard', 'Mobile App', 'Pricing', 'Changelog'] },
-            { title: 'Company', links: ['About', 'Blog', 'Careers', 'Press', 'Partners'] },
-            { title: 'Support', links: ['Help Center', 'Documentation', 'API', 'Status', 'Contact'] },
+            {
+              title: 'Product',
+              links: [
+                { label: 'Features', href: '#features' },
+                { label: 'Dashboard', href: '#dashboard' },
+                { label: 'Mobile App', href: '#mobile-app' },
+                { label: 'Pricing', href: '#pricing' },
+                { label: 'Changelog', href: '#changelog' },
+              ],
+            },
+            {
+              title: 'Company',
+              links: [
+                { label: 'About', href: '#about' },
+                { label: 'Blog', href: '#blog' },
+                { label: 'Careers', href: '#careers' },
+                { label: 'Press', href: '#press' },
+                { label: 'Partners', href: '#partners' },
+              ],
+            },
+            {
+              title: 'Support',
+              links: [
+                { label: 'Help Center', href: '#help-center' },
+                { label: 'Documentation', href: '#documentation' },
+                { label: 'API', href: '#api' },
+                { label: 'Status', href: '#status' },
+                { label: 'Contact', href: '#contact' },
+              ],
+            },
           ].map((section) => (
             <div key={section.title}>
               <h4 className="text-[11px] sm:text-sm font-bold text-white mb-2 sm:mb-4 uppercase tracking-wider">{section.title}</h4>
               <ul className="space-y-1.5 sm:space-y-3">
                 {section.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-[10px] sm:text-sm text-gray-500 hover:text-pink-400 transition-colors">
-                      {link}
+                  <li key={link.label}>
+                    <a href={link.href} className="text-[10px] sm:text-sm text-gray-500 hover:text-pink-400 transition-colors">
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -1332,10 +1369,492 @@ function Footer() {
   );
 }
 
+// ==================== PAGE ROUTES ====================
+const PAGE_TITLES: Record<string, { title: string; description: string }> = {
+  home: { title: 'KaraQ Pro', description: 'Where every voice finds its stage.' },
+  features: { title: 'Features', description: 'Everything a great karaoke night needs.' },
+  dashboard: { title: 'Dashboard', description: 'Venue operations, live insights and event control.' },
+  'mobile-app': { title: 'Mobile App', description: 'Guests request songs and join the vibe from anywhere.' },
+  pricing: { title: 'Pricing', description: 'Flexible plans for nights, venues and music communities.' },
+  changelog: { title: 'Changelog', description: 'What is new across the KaraQ experience.' },
+  about: { title: 'About', description: 'A human story about music, people and community.' },
+  blog: { title: 'Blog', description: 'Ideas, stories and nightlife inspiration.' },
+  careers: { title: 'Careers', description: 'Build memorable nights with the KaraQ team.' },
+  press: { title: 'Press', description: 'Press kit, stories and venue spotlights.' },
+  partners: { title: 'Partners', description: 'Hospitality, entertainment and community partnerships.' },
+  'help-center': { title: 'Help Center', description: 'Support for singers, hosts, DJs and venues.' },
+  documentation: { title: 'Documentation', description: 'How KaraQ works behind the scenes.' },
+  api: { title: 'API', description: 'Integrations and access for venue teams.' },
+  status: { title: 'Status', description: 'Platform stability and operational updates.' },
+  contact: { title: 'Contact', description: 'Say hello and talk through your next night.' },
+};
+
+function getCurrentPageHash(): string {
+  if (typeof window === 'undefined') return 'home';
+
+  const hash = window.location.hash.replace(/^#\/?/, '').trim();
+  return hash && PAGE_TITLES[hash] ? hash : 'home';
+}
+
+function navigateToPage(page: string) {
+  const target = page === 'home' ? '' : `#${page}`;
+  window.location.hash = target;
+}
+
+function SectionHeader({
+  eyebrow,
+  title,
+  copy,
+}: {
+  eyebrow: string;
+  title: string;
+  copy?: string;
+}) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-pink-500/20 bg-pink-500/8 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-pink-200">
+        <Sparkles className="h-3.5 w-3.5" />
+        {eyebrow}
+      </div>
+      <h2 className="text-3xl font-black tracking-[-0.06em] text-white sm:text-4xl lg:text-5xl">{title}</h2>
+      {copy && <p className="mt-4 text-base leading-relaxed text-slate-300">{copy}</p>}
+    </div>
+  );
+}
+
+function FeaturePage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Features"
+          title="A room built for the moment, the crowd and the song."
+          copy="KaraQ helps venues, DJ teams and singers create smoother nights, warmer rooms and better memories."
+        />
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {[
+            { title: 'Live queue', copy: 'See who is next, what is requested, and how the room is moving in real time.', icon: <Music className="h-6 w-6" /> },
+            { title: 'Smart DJ controls', copy: 'Keep songs, pacing and the room flow consistent from booth to stage.', icon: <Monitor className="h-6 w-6" /> },
+            { title: 'Singer app', copy: 'Guests can browse songs, queue requests and join from their phone in seconds.', icon: <Smartphone className="h-6 w-6" /> },
+            { title: 'Venue dashboard', copy: 'Track event rhythm, operations and the details that make a night run smoothly.', icon: <BarChart3 className="h-6 w-6" /> },
+          ].map((item) => (
+            <div key={item.title} className="rounded-[1.5rem] border border-white/10 bg-[#0a1323] p-5">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 text-white">{item.icon}</div>
+              <h3 className="text-xl font-bold text-white">{item.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-300">{item.copy}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <FeatureShowcase />
+      <QuickFeatures />
+    </div>
+  );
+}
+
+function DashboardPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Dashboard"
+          title="See the room before it changes."
+          copy="From the host stand to the bar, the dashboard keeps the night calm, clear and moving."
+        />
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {[
+            { label: 'Songs queued', value: '184', change: '+27%' },
+            { label: 'Audience engaged', value: '76%', change: '+12%' },
+            { label: 'Average wait', value: '4m', change: '-18%' },
+            { label: 'Venue mood', value: 'High', change: 'Strong' },
+          ].map((item) => (
+            <div key={item.label} className="rounded-[1.5rem] border border-white/10 bg-[#0a1323] p-5">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-slate-500">{item.label}</div>
+              <div className="mt-4 text-3xl font-black text-white">{item.value}</div>
+              <div className="mt-2 text-sm text-pink-200">{item.change}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-[2rem] border border-white/10 bg-[#0b1220] p-6">
+            <h3 className="text-xl font-bold text-white">Tonight’s flow</h3>
+            <div className="mt-6 space-y-4">
+              {['Doors open', 'First singer', 'Open mic', 'Peak hour', 'Final encore'].map((step, index) => (
+                <div key={step} className="flex items-center gap-4">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-xs font-bold text-white">{index + 1}</div>
+                  <div className="flex-1 rounded-xl border border-white/10 bg-white/3 px-3 py-2 text-sm text-slate-300">{step}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-white/10 bg-[#0b1220] p-6">
+            <h3 className="text-xl font-bold text-white">What matters most</h3>
+            <ul className="mt-6 space-y-4 text-sm text-slate-300">
+              <li>• Smooth singer rotation</li>
+              <li>• Clear queue visibility</li>
+              <li>• Team communication</li>
+              <li>• Better room pacing</li>
+              <li>• Stronger guest participation</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function MobileAppPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-pink-500/20 bg-pink-500/8 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-pink-200">
+              <Smartphone className="h-3.5 w-3.5" />
+              Mobile app
+            </div>
+            <h2 className="text-3xl font-black tracking-[-0.06em] text-white sm:text-5xl">Your next song is already in your pocket.</h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300">
+              The app lets guests discover the room, queue songs and jump into the night without friction.
+            </p>
+          </div>
+          <div className="rounded-[2rem] border border-white/10 bg-[#0b1220] p-6">
+            <div className="mx-auto max-w-xs rounded-[2rem] bg-black p-4 shadow-2xl shadow-pink-500/20">
+              <div className="mb-4 h-1.5 w-16 rounded-full bg-white/15 mx-auto" />
+              <div className="space-y-3">
+                <div className="rounded-xl bg-white/5 p-3">
+                  <div className="text-xs uppercase tracking-[0.2em] text-pink-200">Now playing</div>
+                  <div className="mt-2 text-lg font-bold text-white">Don’t Stop Believin’</div>
+                </div>
+                <div className="rounded-xl bg-white/5 p-3">
+                  <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Queue</div>
+                  <div className="mt-2 text-sm text-slate-300">You are #7 in line</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function PricingPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Pricing"
+          title="Flexible plans for every kind of night."
+          copy="Start simple, grow confidently and support the room when the energy spikes."
+        />
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {[
+            { name: 'Starter', price: '$0', features: ['1 venue', 'Basic queue', 'Guest access', 'Email support'] },
+            { name: 'Pro', price: '$49', features: ['Unlimited songs', 'DJ controls', 'Venue insights', 'Priority support'], popular: true },
+            { name: 'Enterprise', price: '$149', features: ['Multi-venue setup', 'Custom branding', 'Dedicated onboarding', 'White-label support'] },
+          ].map((plan) => (
+            <div key={plan.name} className={`rounded-[1.7rem] border p-6 ${plan.popular ? 'border-pink-400/40 bg-gradient-to-b from-pink-500/10 to-[#0a1220]' : 'border-white/10 bg-[#0b1220]'}`}>
+              {plan.popular && <div className="mb-4 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-950">Most popular</div>}
+              <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
+              <div className="mt-6 text-4xl font-black text-white">{plan.price}</div>
+              <ul className="mt-6 space-y-3 text-sm text-slate-300">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-3"><CheckCircle2 className="h-4 w-4 text-pink-300" />{feature}</li>
+                ))}
+              </ul>
+              <button type="button" className="mt-8 w-full rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 px-4 py-3 text-sm font-semibold text-slate-950">Choose plan</button>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ChangelogPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader
+          eyebrow="Changelog"
+          title="Fresh updates for better nights."
+          copy="Recent improvements across performance, storytelling and venue workflows."
+        />
+
+        <div className="mt-12 space-y-5">
+          {[
+            ['August 2026', 'Improved story-driven homepage storytelling and premium imagery direction.'],
+            ['July 2026', 'Expanded venue analytics and smoother mobile queue interactions.'],
+            ['June 2026', 'Added richer support and contact flows for venue teams and DJs.'],
+          ].map(([date, entry]) => (
+            <div key={date} className="rounded-[1.5rem] border border-white/10 bg-[#0b1220] p-6">
+              <div className="text-xs uppercase tracking-[0.2em] text-pink-200">{date}</div>
+              <p className="mt-3 text-base text-slate-300">{entry}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AboutPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-pink-500/20 bg-pink-500/8 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-pink-200">
+              <Mic2 className="h-3.5 w-3.5" />
+              About
+            </div>
+            <h2 className="text-3xl font-black tracking-[-0.06em] text-white sm:text-5xl">We believe everyone has a song.</h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-300">
+              KaraQ exists to make music feel accessible, social and worth remembering. We create the rhythm behind nights that people talk about long after the room clears.
+            </p>
+          </div>
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b1220]">
+            <img src={IMAGES.heroNightclub} alt="Crowd at karaoke venue" className="h-full w-full object-cover" />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function BlogPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Blog" title="Stories from the room." />
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {['Why karaoke feels like community', 'How good venues shape the night', 'The songs that make a room feel alive'].map((title) => (
+            <article key={title} className="rounded-[1.5rem] border border-white/10 bg-[#0b1220] p-6">
+              <div className="text-xs uppercase tracking-[0.2em] text-pink-200">Story</div>
+              <h3 className="mt-4 text-xl font-bold text-white">{title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-300">A closer look at the music, people and atmosphere that make karaoke memorable.</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function CareersPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Careers" title="Build nights people remember." copy="Join the team shaping memorable music experiences and hospitality moments." />
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {['Product designer', 'Venue success lead', 'Operations host'].map((role) => (
+            <div key={role} className="rounded-[1.5rem] border border-white/10 bg-[#0b1220] p-6">
+              <div className="text-xs uppercase tracking-[0.2em] text-pink-200">Open role</div>
+              <h3 className="mt-4 text-xl font-bold text-white">{role}</h3>
+              <p className="mt-3 text-sm text-slate-300">Help shape the experience for singers, hosts, DJs and venues.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function PressPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Press" title="KaraQ in the room, in the stories and in the culture." />
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          {['Venue feature', 'Community spotlight', 'Hospitality story', 'Music-first brand story'].map((item) => (
+            <div key={item} className="rounded-[1.5rem] border border-white/10 bg-[#0b1220] p-6">
+              <div className="text-xs uppercase tracking-[0.2em] text-pink-200">Media</div>
+              <h3 className="mt-4 text-xl font-bold text-white">{item}</h3>
+              <p className="mt-3 text-sm text-slate-300">An editorial overview of the KaraQ experience and its role across nightlife, hospitality and entertainment.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function PartnersPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Partners" title="Bring more music, connection and memorable nights to the room." copy="From hospitality groups to entertainment brands, KaraQ creates premium community experiences." />
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {['Hospitality', 'Entertainment', 'Events'].map((partner) => (
+            <div key={partner} className="rounded-[1.5rem] border border-white/10 bg-[#0b1220] p-6">
+              <h3 className="text-xl font-bold text-white">{partner}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-300">Create branded nights, hosted experiences and loyalty moments that people remember.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function SupportPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Help center" title="Need a hand?" copy="Support for singers, hosts, DJs, venue teams and partners." />
+        <div className="mt-12 space-y-3">
+          {[
+            ['Singers', 'How do I request a song?'],
+            ['Hosts', 'How do I manage the queue?'],
+            ['DJs', 'How do I keep the room moving?'],
+            ['Venues', 'How do I launch a new event?'],
+            ['Account', 'How do I reset my password?'],
+          ].map(([group, question]) => (
+            <div key={group} className="rounded-[1.25rem] border border-white/10 bg-[#0b1220] p-5">
+              <div className="text-xs uppercase tracking-[0.2em] text-pink-200">{group}</div>
+              <h3 className="mt-2 text-lg font-semibold text-white">{question}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function DocumentationPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Documentation" title="How KaraQ helps the room run better." />
+        <div className="mt-12 rounded-[1.75rem] border border-white/10 bg-[#0b1220] p-6">
+          <ul className="space-y-4 text-sm text-slate-300">
+            <li>• Event flow and queue management</li>
+            <li>• Host and DJ workflows</li>
+            <li>• Singer request and mobile participation</li>
+            <li>• Venue operations and reporting</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function APIPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="API" title="Seamless integrations for venue teams." copy="Connect your event data, venue systems and operational workflows without disrupting the guest experience." />
+      </section>
+    </div>
+  );
+}
+
+function StatusPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Status" title="Everything is running as expected." copy="Current platform health for events, queue flow and music operations." />
+      </section>
+    </div>
+  );
+}
+
+function ContactPage() {
+  return (
+    <div className="bg-[#020611] text-white">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeader eyebrow="Contact" title="Let’s talk about your next night." copy="Whether you’re a singer, host, DJ, venue or partner, we’re listening." />
+        <div className="mt-12 rounded-[1.75rem] border border-white/10 bg-[#0b1220] p-6">
+          <div className="grid gap-5 md:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-sm text-slate-400">Name</label>
+              <input className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none" placeholder="Your name" />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm text-slate-400">Email</label>
+              <input className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div className="mt-5">
+            <label className="mb-2 block text-sm text-slate-400">Message</label>
+            <textarea className="h-36 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none" placeholder="Tell us what you need." />
+          </div>
+          <button type="button" className="mt-6 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 px-6 py-3 text-sm font-semibold text-slate-950">Send message</button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function renderPage(page: string) {
+  switch (page) {
+    case 'features':
+      return <FeaturePage />;
+    case 'dashboard':
+      return <DashboardPage />;
+    case 'mobile-app':
+      return <MobileAppPage />;
+    case 'pricing':
+      return <PricingPage />;
+    case 'changelog':
+      return <ChangelogPage />;
+    case 'about':
+      return <AboutPage />;
+    case 'blog':
+      return <BlogPage />;
+    case 'careers':
+      return <CareersPage />;
+    case 'press':
+      return <PressPage />;
+    case 'partners':
+      return <PartnersPage />;
+    case 'help-center':
+      return <SupportPage />;
+    case 'documentation':
+      return <DocumentationPage />;
+    case 'api':
+      return <APIPage />;
+    case 'status':
+      return <StatusPage />;
+    case 'contact':
+      return <ContactPage />;
+    case 'home':
+    default:
+      return (
+        <>
+          <Hero />
+          <MarqueeSection />
+          <FeaturedExperiences />
+          <FeatureShowcase />
+          <TrendingSingers />
+          <QuickFeatures />
+          <Testimonials />
+          <Pricing />
+          <CTASection />
+        </>
+      );
+  }
+}
+
 // ==================== MAIN APP ====================
 export default function App() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>('login');
+  const [currentPage, setCurrentPage] = useState<string>(() => getCurrentPageHash());
+
+  useEffect(() => {
+    const handleHashChange = () => setCurrentPage(getCurrentPageHash());
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const openAuth = (mode: AuthMode = 'login') => {
     setAuthMode(mode);
@@ -1346,15 +1865,9 @@ export default function App() {
     <AuthContext.Provider value={{ openAuth }}>
       <div className="bg-black min-h-screen text-white overflow-x-hidden">
         <Navbar />
-        <Hero />
-        <MarqueeSection />
-        <FeaturedExperiences />
-        <FeatureShowcase />
-        <TrendingSingers />
-        <QuickFeatures />
-        <Testimonials />
-        <Pricing />
-        <CTASection />
+        <main>
+          {renderPage(currentPage)}
+        </main>
         <Footer />
 
         <AuthModal
