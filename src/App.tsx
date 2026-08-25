@@ -1,4 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
+import black1 from '@/assets/images/black1.jpeg';
+import black2 from '@/assets/images/black2.jpeg';
+import black3 from '@/assets/images/black3.jpeg';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Mic2,
@@ -671,21 +674,21 @@ function MarqueeSection() {
 function FeaturedExperiences() {
   const cards = [
     {
-      image: '/images/black1.jpeg',
+      image: black1,
       tag: 'For Singers',
       title: 'Belt out your favorites',
       description: '50,000+ songs with lyrics, key control, and tempo adjust.',
       gradient: 'from-pink-500 to-rose-500',
     },
     {
-      image: '/images/black2.jpeg',
+      image: black2,
       tag: 'For DJs',
       title: 'Pro mixing controls',
       description: 'Live audio mixing and real-time key changes. Built for performance.',
       gradient: 'from-orange-500 to-amber-500',
     },
     {
-      image: '/images/black3.jpeg',
+      image: black3,
       tag: 'For Venues',
       title: 'Pack the house every night',
       description: 'Manage staff, track revenue, and analyze what works.',
@@ -886,9 +889,9 @@ function FeatureRow({
 // ==================== TRENDING SINGERS ====================
 function TrendingSingers() {
   const singers = [
-    { name: 'Sarah M.', song: "Don't Stop Believin'", image: '/images/black1.jpeg', plays: '2.4K', emoji: '🎤' },
+    { name: 'Sarah M.', song: "Don't Stop Believin'", image: black1, plays: '2.4K', emoji: '🎤' },
     { name: 'Marcus J.', song: 'Bohemian Rhapsody', image: IMAGES.djPortrait, plays: '1.8K', emoji: '🎸' },
-    { name: 'Jessica L.', song: 'I Will Survive', image: '/images/black3.jpeg', plays: '3.1K', emoji: '💃' },
+    { name: 'Jessica L.', song: 'I Will Survive', image: black3, plays: '3.1K', emoji: '💃' },
     { name: 'Dave R.', song: 'Sweet Caroline', image: IMAGES.djTanktop, plays: '1.5K', emoji: '🎙️' },
   ];
 
