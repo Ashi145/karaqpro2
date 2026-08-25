@@ -671,21 +671,21 @@ function MarqueeSection() {
 function FeaturedExperiences() {
   const cards = [
     {
-      image: IMAGES.karaokeParty,
+      image: '/images/black1.jpeg',
       tag: 'For Singers',
       title: 'Belt out your favorites',
       description: '50,000+ songs with lyrics, key control, and tempo adjust.',
       gradient: 'from-pink-500 to-rose-500',
     },
     {
-      image: IMAGES.djMixing,
+      image: '/images/black2.jpeg',
       tag: 'For DJs',
       title: 'Pro mixing controls',
       description: 'Live audio mixing and real-time key changes. Built for performance.',
       gradient: 'from-orange-500 to-amber-500',
     },
     {
-      image: IMAGES.dancingCrowd,
+      image: '/images/black3.jpeg',
       tag: 'For Venues',
       title: 'Pack the house every night',
       description: 'Manage staff, track revenue, and analyze what works.',
@@ -886,9 +886,9 @@ function FeatureRow({
 // ==================== TRENDING SINGERS ====================
 function TrendingSingers() {
   const singers = [
-    { name: 'Sarah M.', song: "Don't Stop Believin'", image: IMAGES.womanSinging, plays: '2.4K', emoji: '🎤' },
+    { name: 'Sarah M.', song: "Don't Stop Believin'", image: '/images/black1.jpeg', plays: '2.4K', emoji: '🎤' },
     { name: 'Marcus J.', song: 'Bohemian Rhapsody', image: IMAGES.djPortrait, plays: '1.8K', emoji: '🎸' },
-    { name: 'Jessica L.', song: 'I Will Survive', image: IMAGES.friendsKaraoke, plays: '3.1K', emoji: '💃' },
+    { name: 'Jessica L.', song: 'I Will Survive', image: '/images/black3.jpeg', plays: '3.1K', emoji: '💃' },
     { name: 'Dave R.', song: 'Sweet Caroline', image: IMAGES.djTanktop, plays: '1.5K', emoji: '🎙️' },
   ];
 
