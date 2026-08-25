@@ -9,12 +9,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: "/karaqpro2/",
+export default defineConfig(({ command }) => ({
+  // Only the production build needs the /karaqpro2/ subpath (GitHub Pages).
+  // The dev server must serve from root, or `npm run dev` shows a blank page
+  // for anyone who clones the repo and opens localhost.
+  base: command === "build" ? "/karaqpro2/" : "/",
   plugins: [react(), tailwindcss(), viteSingleFile()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
   },
-});
+}));
